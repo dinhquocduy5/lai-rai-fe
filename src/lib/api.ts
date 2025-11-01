@@ -11,7 +11,7 @@ export const api = axios.create({
 
 // Response interceptor for handling errors
 api.interceptors.response.use(
-  (response) => response.data,
+  (response) => response,
   (error) => {
     const message = error.response?.data?.message || error.message || 'Something went wrong'
     throw new Error(message)
