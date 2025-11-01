@@ -1,4 +1,4 @@
-import { useTables, useUpdateTableStatus } from '@/lib/queries'
+import { useTables } from '@/lib/queries'
 import { getTableStatusColor, getTableStatusText } from '@/lib/utils'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
 import ErrorMessage from '@/components/common/ErrorMessage'
@@ -9,7 +9,6 @@ import type { TableStatus, Table } from '@/types'
 
 export default function Tables() {
   const { data: tables, isLoading, error, refetch } = useTables()
-  const updateStatus = useUpdateTableStatus()
   const [filter, setFilter] = useState<'all' | TableStatus>('all')
   const [selectedTable, setSelectedTable] = useState<Table | null>(null)
 

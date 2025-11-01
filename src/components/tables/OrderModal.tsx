@@ -31,14 +31,14 @@ export default function OrderModal({ isOpen, onClose, table }: OrderModalProps) 
 
   // Initialize cart from existing order
   useEffect(() => {
-    if (activeOrder?.order?.id && isOpen) {
-      const existingCart = activeOrder.items.map(item => ({
+    if (activeOrder?.id && isOpen) {
+      const existingCart = activeOrder.items?.map(item => ({
         menu_item_id: item.menu_item_id,
         name: item.menu_item?.name || '',
         price: item.price_at_order_time,
         quantity: item.quantity,
         note: item.note || '',
-      }))
+      })) || []
       setCart(existingCart)
     } else if (!isOpen) {
       // Reset cart when modal closes
@@ -113,7 +113,7 @@ export default function OrderModal({ isOpen, onClose, table }: OrderModalProps) 
     }
 
     try {
-      const existingOrderId = activeOrder?.order?.id
+      const existingOrderId = activeOrder?.id
       
       if (existingOrderId) {
         // Update existing order
@@ -151,7 +151,7 @@ export default function OrderModal({ isOpen, onClose, table }: OrderModalProps) 
             <div>
               <h3 className="text-xl font-bold">{table.name}</h3>
               <p className="text-sm text-primary-50">
-                {orderLoading ? 'Đang kiểm tra...' : activeOrder?.order ? 'Chỉnh sửa order' : 'Tạo order mới'}
+                {orderLoading ? 'Đang kiểm tra...' : activeOrder ? 'Chỉnh sửa order' : 'Tạo order mới'}
               </p>
             </div>
             <button
@@ -358,7 +358,7 @@ export default function OrderModal({ isOpen, onClose, table }: OrderModalProps) 
                         className="btn w-full bg-white text-primary-600 hover:bg-white/90 disabled:opacity-50 flex items-center justify-center gap-2 py-4 font-bold shadow-xl text-base"
                       >
                         <Check className="h-6 w-6" strokeWidth={2.5} />
-                        {activeOrder?.order ? 'CẬP NHẬT ORDER' : 'XÁC NHẬN ORDER'}
+                        {activeOrder ? 'CẬP NHẬT ORDER' : 'XÁC NHẬN ORDER'}
                       </button>
                     </div>
                   </div>

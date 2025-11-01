@@ -30,6 +30,7 @@ export default function Payments() {
 
   const handleExportExcel = () => {
     if (!payments || payments.length === 0) return
+    if (!revenue) return
     exportPaymentsToExcel(payments, dateRange.start, dateRange.end, revenue)
   }
 

@@ -2,6 +2,7 @@ import { useMenuItemsByCategory } from '@/lib/queries'
 import { formatCurrency } from '@/lib/utils'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
 import ErrorMessage from '@/components/common/ErrorMessage'
+import type { MenuItem } from '@/types'
 import { Search, Coffee, UtensilsCrossed } from 'lucide-react'
 import { useState } from 'react'
 
@@ -22,10 +23,10 @@ export default function Menu() {
   // Filter items based on search
   const filteredCategories = categories.map(([category, items]) => [
     category,
-    items.filter(item => 
+    (items as MenuItem[]).filter(item => 
       item.name.toLowerCase().includes(searchTerm.toLowerCase())
     ),
-  ]).filter(([, items]) => (items as any[]).length > 0)
+  ]).filter(([, items]) => (items as MenuItem[]).length > 0) as [string, MenuItem[]][]
 
   return (
     <div className="p-4 space-y-4">
@@ -33,7 +34,7 @@ export default function Menu() {
       <div>
         <h2 className="text-2xl font-bold text-gray-900">Menu</h2>
         <p className="text-sm text-gray-600">
-          {categories.reduce((sum, [, items]) => sum + items.length, 0)} món
+          {categories.reduce((sum, [, items]) => sum + (items as MenuItem[]).length, 0)} món
         </p>
       </div>
 
@@ -58,16 +59,16 @@ export default function Menu() {
           </div>
         ) : (
           filteredCategories.map(([category, items]) => (
-            <div key={category}>
+            <div key={category as string}>
               <div className="flex items-center gap-2 mb-3">
-                <h3 className="text-lg font-semibold text-gray-900">{category}</h3>
+                <h3 className="text-lg font-semibold text-gray-900">{category as string}</h3>
                 <span className="text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">
                   {items.length}
                 </span>
               </div>
 
               <div className="space-y-2">
-                {items.map(item => (
+                {items.map((item: MenuItem) => (
                   <div
                     key={item.id}
                     className="card flex items-center justify-between hover:shadow-md transition-shadow"

@@ -22,7 +22,7 @@ interface MiniBillProps {
 
 const MiniBill = forwardRef<HTMLDivElement, MiniBillProps>(({ order }, ref) => {
   const subtotal =
-    order.items?.reduce((sum, item) => sum + item.price * item.quantity, 0) ||
+    order.items?.reduce((sum, item) => sum + item.price_at_order_time * item.quantity, 0) ||
     0;
 
   return (

@@ -249,7 +249,22 @@ export default function Orders() {
 
       {/* Hidden Bill for Printing */}
       <div className="hidden">
-        {selectedOrder && <MiniBill ref={billRef} order={selectedOrder} />}
+        {selectedOrder && selectedOrder.total_amount !== undefined && (
+          <MiniBill ref={billRef} order={{
+            id: selectedOrder.id,
+            table_id: selectedOrder.table_id,
+            check_in: selectedOrder.check_in,
+            check_out: selectedOrder.check_out,
+            total_amount: selectedOrder.total_amount,
+            items: selectedOrder.items?.map(item => ({
+              id: item.id,
+              name: item.menu_item?.name || 'Unknown',
+              quantity: item.quantity,
+              price_at_order_time: item.price_at_order_time
+            })),
+            table: selectedOrder.table
+          }} />
+        )}
       </div>
     </div>
   );

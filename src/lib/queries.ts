@@ -39,7 +39,7 @@ export const useTables = () => {
     queryKey: QUERY_KEYS.tables,
     queryFn: async () => {
       const response = await api.get<ApiResponse<Table[]>>('/tables')
-      return response.data
+      return response.data.data
     },
   })
 }
@@ -49,7 +49,7 @@ export const useAvailableTables = () => {
     queryKey: QUERY_KEYS.availableTables,
     queryFn: async () => {
       const response = await api.get<ApiResponse<Table[]>>('/tables/available')
-      return response.data
+      return response.data.data
     },
   })
 }
@@ -60,7 +60,7 @@ export const useUpdateTableStatus = () => {
   return useMutation({
     mutationFn: async ({ id, status }: { id: number; status: 'available' | 'occupied' }) => {
       const response = await api.patch<ApiResponse<Table>>(`/tables/${id}/status`, { status })
-      return response.data
+      return response.data.data
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.tables })
@@ -76,7 +76,7 @@ export const useMenuItems = (type?: 'food' | 'drink') => {
     queryFn: async () => {
       const params = type ? { type } : {}
       const response = await api.get<ApiResponse<MenuItem[]>>('/menu-items', { params })
-      return response.data
+      return response.data.data
     },
   })
 }
@@ -86,7 +86,7 @@ export const useMenuItemsByCategory = () => {
     queryKey: QUERY_KEYS.menuItemsByCategory,
     queryFn: async () => {
       const response = await api.get<ApiResponse<MenuItemsByCategory>>('/menu-items/grouped/by-category')
-      return response.data
+      return response.data.data
     },
   })
 }
@@ -98,7 +98,7 @@ export const useOrders = (status?: 'pending' | 'completed' | 'cancelled') => {
     queryFn: async () => {
       const params = status ? { status } : {}
       const response = await api.get<ApiResponse<Order[]>>('/orders', { params })
-      return response.data
+      return response.data.data
     },
   })
 }
@@ -108,7 +108,7 @@ export const useOrder = (id: number) => {
     queryKey: QUERY_KEYS.order(id),
     queryFn: async () => {
       const response = await api.get<ApiResponse<Order>>(`/orders/${id}`)
-      return response.data
+      return response.data.data
     },
     enabled: !!id,
   })
@@ -119,7 +119,7 @@ export const useTableActiveOrder = (tableId: number) => {
     queryKey: QUERY_KEYS.tableActiveOrder(tableId),
     queryFn: async () => {
       const response = await api.get<ApiResponse<Order>>(`/orders/table/${tableId}/active`)
-      return response.data
+      return response.data.data
     },
     enabled: !!tableId,
   })
@@ -131,7 +131,7 @@ export const useCreateOrder = () => {
   return useMutation({
     mutationFn: async (data: CreateOrderRequest) => {
       const response = await api.post<ApiResponse<Order>>('/orders', data)
-      return response.data
+      return response.data.data
     },
     onSuccess: (newOrder) => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.orders })
@@ -150,7 +150,7 @@ export const useUpdateOrderItems = () => {
   return useMutation({
     mutationFn: async ({ id, data }: { id: number; data: UpdateOrderItemsRequest }) => {
       const response = await api.put<ApiResponse<Order>>(`/orders/${id}/items`, data)
-      return response.data
+      return response.data.data
     },
     onSuccess: (updatedOrder, variables) => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.order(variables.id) })
@@ -169,7 +169,7 @@ export const useUpdateOrderStatus = () => {
   return useMutation({
     mutationFn: async ({ id, status }: { id: number; status: 'pending' | 'completed' | 'cancelled' }) => {
       const response = await api.patch<ApiResponse<Order>>(`/orders/${id}/status`, { status })
-      return response.data
+      return response.data.data
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.orders })
@@ -189,7 +189,7 @@ export const useCompletePayment = () => {
         amount: amount,
         payment_method: 'cash',
       })
-      return response.data
+      return response.data.data
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.orders })
@@ -206,7 +206,7 @@ export const usePayments = () => {
     queryKey: QUERY_KEYS.payments,
     queryFn: async () => {
       const response = await api.get<ApiResponse<Payment[]>>('/payments')
-      return response.data
+      return response.data.data
     },
   })
 }
@@ -220,7 +220,7 @@ export const useRevenue = (startDate?: string, endDate?: string) => {
       if (endDate) params.end_date = endDate
       
       const response = await api.get<ApiResponse<RevenueReport>>('/payments/revenue', { params })
-      return response.data
+      return response.data.data
     },
   })
 }
@@ -231,7 +231,7 @@ export const useCreatePayment = () => {
   return useMutation({
     mutationFn: async (data: CreatePaymentRequest) => {
       const response = await api.post<ApiResponse<Payment>>('/payments', data)
-      return response.data
+      return response.data.data
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.payments })
